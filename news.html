@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Coalition News</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset and Fonts */
+        body, h1, h2, h3, p, ul {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            color: #E0E0E0;
+            font-family: 'Roboto Mono', monospace;
+            line-height: 1.6;
+        }
+
+        h1, h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Color Palette Variables */
+        :root {
+            --primary-bg: #0d0d0d;
+            --accent-purple: #9b59b6;
+            --accent-cyan: #3498db;
+            --text-color: #E0E0E0;
+        }
+
+        /* General Layout */
+        .main-content {
+            padding: 40px 5%;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: #1a1a1a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo a {
+            color: var(--text-color);
+            font-size: 1.5em;
+            font-weight: 900;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-purple);
+        }
+
+        .nav-links .active-link {
+            color: var(--accent-purple);
+            text-shadow: 0 0 5px var(--accent-purple);
+        }
+
+        /* News Section */
+        .news-section {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .news-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: var(--accent-purple);
+            text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+            text-align: center;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .news-card {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            padding: 20px;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .news-card h3 {
+            font-size: 1.5em;
+            color: var(--accent-cyan);
+            margin-bottom: 10px;
+        }
+
+        .news-card p.date {
+            font-size: 0.9em;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .news-card p.blurb {
+            font-size: 1em;
+            color: var(--text-color);
+        }
+        
+        /* New Styles for Editable Content */
+        .editable-article-container {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .editable-article {
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            min-height: 200px;
+        }
+
+        .editable-article:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+        }
+
+        .save-button {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--accent-purple);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .save-button:hover {
+            background-color: #8e44ad;
+            transform: translateY(-2px);
+        }
+
+        .future-articles {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #1a1a1a;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 5%;
+            background-color: #1a1a1a;
+            border-top: 1px solid #333;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .social-links a:hover {
+            opacity: 1;
+        }
+
+        .social-links svg {
+            fill: var(--text-color);
+            width: 30px;
+            height: 30px;
+            transition: fill 0.3s;
+        }
+
+        .social-links a:hover svg {
+            fill: var(--accent-purple);
+        }
+
+        .footer p {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px 5%;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            .nav-links li {
+                margin: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html">Nexus Coalition</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="roster.html">ROSTER</a></li>
+            <li><a href="schedule.html">SCHEDULE</a></li>
+            <li><a href="news.html" class="active-link">NEWS</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <!-- News Section -->
+        <section class="news-section">
+            <h2>FEATURED ARTICLE</h2>
+            <div class="editable-article-container">
+                <div id="editable-content" class="editable-article" contenteditable="true">
+                    <h3>Nexus Coalition Announces New Partnerships and Plans for 2026</h3>
+                    <p class="date">October 28, 2025</p>
+                    <p>Building on the momentum from our recent victory at the Regional Finals, Nexus Coalition is thrilled to announce a series of strategic partnerships and our ambitious plans for the upcoming year. We are dedicated to pushing the boundaries of competitive gaming and providing our fans with unprecedented content and experiences.</p>
+                    <p>Our new collaborations with leading technology and apparel brands will not only enhance our team's performance but also bring exciting new merchandise to the shop. Furthermore, we are investing in a state-of-the-art training facility to ensure our players have the resources they need to dominate the national and international stage.</p>
+                    <p>Thank you for your continued support. The future is bright, and we're just getting started. Stay tuned for more updates as we gear up for the National Championship!</p>
+                </div>
+                <button id="save-button" class="save-button">Save Article</button>
+            </div>
+        </section>
+
+        <!-- Future Articles Section -->
+        <section class="future-articles">
+            <h2>FUTURE ARTICLES</h2>
+            <p>This area is reserved for upcoming news stories and announcements. Check back soon for more updates!</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="social-links">
+            <a href="https://twitter.com/NexusCoalition" target="_blank" aria-label="Twitter">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.953 4.57a10 10 0 0 1-2.825.775 4.958 4.958 0 0 0 2.163-2.723c-.951.555-2.005.959-3.127 1.185A4.956 4.956 0 0 0 14.82 2.76a4.956 4.956 0 0 0-4.958 4.958c0 .389.044.767.127 1.135A14.045 14.045 0 0 1 1.47 2.133a4.955 4.955 0 0 0-.66 2.477c0 1.71.868 3.218 2.185 4.1a4.958 4.958 0 0 1-2.24-.618v.062c0 2.38 1.69 4.35 3.93 4.805a4.939 4.939 0 0 1-2.23.084c.623 1.956 2.438 3.38 4.587 3.42A9.973 9.973 0 0 1 0 20.31a14.025 14.025 0 0 0 7.556 2.213c9.055 0 14.01-7.493 14.01-14.01 0-.214-.005-.429-.014-.641a9.96 9.96 0 0 0 2.44-2.525z"/>
+                </svg>
+            </a>
+            <a href="https://www.twitch.tv/NexusCoalition" target="_blank" aria-label="Twitch">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.571 5.429c.477 0 .86.386.86.86v4.303c0 .473-.383.86-.86.86h-1.722c-.477 0-.86-.386-.86-.86V6.289c0-.473.383-.86.86-.86h1.722zM21.571 2.22c-1.397-1.396-3.08-2.22-4.912-2.22h-10.4c-.957 0-1.87.37-2.554 1.055C2.923 1.83 2.552 2.744 2.552 3.701v14.402c0 .957.37 1.87 1.055 2.554.684.684 1.597 1.055 2.554 1.055h10.4c1.832 0 3.515-.823 4.912-2.22l2.365-2.365V5.586c0-1.397-1.127-2.525-2.525-2.525zm-2.525 15.541l-2.007 2.007h-10.4c-.53 0-1.037-.206-1.413-.583-.377-.377-.583-.883-.583-1.413V3.701c0-.53.206-1.037.583-1.413.376-.376.883-.583 1.413-.583h10.4c.53 0 1.037.206 1.413.583.377.376.583.883.583 1.413v14.06zM15.429 5.429c.477 0 .86.386.86.86v4.303c0 .473-.383.86-.86.86h-1.722c-.477 0-.86-.386-.86-.86V6.289c0-.473.383-.86.86-.86h1.722z"/>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/c/NexusCoalition" target="_blank" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.498 6.186a3.02 3.02 0 0 0-2.122-2.122C19.7 3.54 12 3.54 12 3.54s-7.7 0-9.376.524a3.02 3.02 0 0 0-2.122 2.122C.5 7.864.5 12 .5 12s0 4.136.5 5.814a3.02 3.02 0 0 0 2.122 2.122c1.676.524 9.376.524 9.376.524s7.7 0 9.376-.524a3.02 3.02 0 0 0 2.122-2.122c.5-1.678.5-5.814.5-5.814s0-4.136-.5-5.814zM9.54 15.936V8.064L15.827 12l-6.287 3.936z"/>
+                </svg>
+            </a>
+        </div>
+        <p>&copy; 2025 Nexus Coalition. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Get elements
+        const editableContent = document.getElementById('editable-content');
+        const saveButton = document.getElementById('save-button');
+
+        // Check for saved content in local storage and load it
+        window.onload = function() {
+            const savedContent = localStorage.getItem('newsArticleContent');
+            if (savedContent) {
+                editableContent.innerHTML = savedContent;
+            }
+        }
+
+        // Save content to local storage on button click
+        saveButton.addEventListener('click', () => {
+            localStorage.setItem('newsArticleContent', editableContent.innerHTML);
+        });
+    </script>
+</body>
+</html>

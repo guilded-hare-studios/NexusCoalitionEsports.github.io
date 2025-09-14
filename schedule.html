@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Coalition Match Schedule</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset and Fonts */
+        body, h1, h2, h3, p, ul {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            color: #E0E0E0;
+            font-family: 'Roboto Mono', monospace;
+            line-height: 1.6;
+        }
+
+        h1, h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Color Palette Variables */
+        :root {
+            --primary-bg: #0d0d0d;
+            --accent-purple: #9b59b6;
+            --accent-cyan: #3498db;
+            --text-color: #E0E0E0;
+        }
+
+        /* General Layout */
+        .main-content {
+            padding: 40px 5%;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: #1a1a1a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo a {
+            color: var(--text-color);
+            font-size: 1.5em;
+            font-weight: 900;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-purple);
+        }
+
+        .nav-links .active-link {
+            color: var(--accent-purple);
+            text-shadow: 0 0 5px var(--accent-purple);
+        }
+
+        /* Schedule Section */
+        .schedule-hero {
+            text-align: center;
+            padding: 80px 20px;
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://placehold.co/1920x400/0d0d0d/E0E0E0?text=SCHEDULE+BACKGROUND');
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+
+        .schedule-hero h1 {
+            font-size: 3.5em;
+            color: var(--accent-purple);
+            text-shadow: 0 0 15px rgba(155, 89, 182, 0.8);
+        }
+
+        .schedule-container {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .match-card {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .match-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .match-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: var(--accent-cyan);
+        }
+
+        .match-info p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        .match-status {
+            display: inline-block;
+            background-color: var(--accent-purple);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+        
+        .match-result {
+            display: inline-block;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        
+        .win {
+            background-color: #27ae60;
+        }
+        
+        .loss {
+            background-color: #c0392b;
+        }
+
+        .live-status {
+            background-color: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+
+        .stream-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: var(--accent-cyan);
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .stream-link:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 5%;
+            background-color: #1a1a1a;
+            border-top: 1px solid #333;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .social-links a:hover {
+            opacity: 1;
+        }
+
+        .social-links svg {
+            fill: var(--text-color);
+            width: 30px;
+            height: 30px;
+            transition: fill 0.3s;
+        }
+
+        .social-links a:hover svg {
+            fill: var(--accent-purple);
+        }
+
+        .footer p {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px 5%;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            .nav-links li {
+                margin: 5px 10px;
+            }
+
+            .schedule-hero h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html">Nexus Coalition</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="roster.html">ROSTER</a></li>
+            <li><a href="schedule.html" class="active-link">SCHEDULE</a></li>
+            <li><a href="news.html">NEWS</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section class="schedule-hero">
+            <h1>MATCH SCHEDULE</h1>
+        </section>
+
+        <section>
+            <div class="schedule-container">
+                <!-- Upcoming Matches -->
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> October 27th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> October 29th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> November 3rd, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> November 5th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> November 10th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> November 12th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> November 17th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> November 19th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> November 24th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> November 26th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> December 1st, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> December 3rd, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> December 8th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> December 10th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> December 15th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> December 17th, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+
+                <div class="match-card">
+                    <h3>Nexus vs. TBD</h3>
+                    <div class="match-info">
+                        <p><strong>Tournament:</strong> FACEIT League Season 7 Open Division</p>
+                        <p><strong>Date:</strong> December 22nd, 2025</p>
+                        <p><strong>Time:</strong> 8:00 PM CST / 9:00 PM EST</p>
+                        <p><strong>Status:</strong> <span class="match-status">Upcoming</span></p>
+                        <p><strong>Result:</strong> TBD</p>
+                        <a href="live.html" class="stream-link">Watch Live</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="social-links">
+            <a href="https://twitter.com/NexusCoalition" target="_blank" aria-label="Twitter">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.953 4.57a10 10 0 0 1-2.825.775 4.958 4.958 0 0 0 2.163-2.723c-.951.555-2.005.959-3.127 1.185A4.956 4.956 0 0 0 14.82 2.76a4.956 4.956 0 0 0-4.958 4.958c0 .389.044.767.127 1.135A14.045 14.045 0 0 1 1.47 2.133a4.955 4.955 0 0 0-.66 2.477c0 1.71.868 3.218 2.185 4.1a4.958 4.958 0 0 1-2.24-.618v.062c0 2.38 1.69 4.35 3.93 4.805a4.939 4.939 0 0 1-2.23.084c.623 1.956 2.438 3.38 4.587 3.42A9.973 9.973 0 0 1 0 20.31a14.025 14.025 0 0 0 7.556 2.213c9.055 0 14.01-7.493 14.01-14.01 0-.214-.005-.429-.014-.641a9.96 9.96 0 0 0 2.44-2.525z"/>
+                </svg>
+            </a>
+            <a href="https://www.twitch.tv/NexusCoalition" target="_blank" aria-label="Twitch">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.571 5.429c.477 0 .86.386.86.86v4.303c0 .473-.383.86-.86.86h-1.722c-.477 0-.86-.386-.86-.86V6.289c0-.473.383-.86.86-.86h1.722zM21.571 2.22c-1.397-1.396-3.08-2.22-4.912-2.22h-10.4c-.957 0-1.87.37-2.554 1.055C2.923 1.83 2.552 2.744 2.552 3.701v14.402c0 .957.37 1.87 1.055 2.554.684.684 1.597 1.055 2.554 1.055h10.4c1.832 0 3.515-.823 4.912-2.22l2.365-2.365V5.586c0-1.397-1.127-2.525-2.525-2.525zm-2.525 15.541l-2.007 2.007h-10.4c-.53 0-1.037-.206-1.413-.583-.377-.377-.583-.883-.583-1.413V3.701c0-.53.206-1.037.583-1.413.376-.376.883-.583 1.413-.583h10.4c.53 0 1.037.206 1.413.583.377.376.583.883.583 1.413v14.06zM15.429 5.429c.477 0 .86.386.86.86v4.303c0 .473-.383.86-.86.86h-1.722c-.477 0-.86-.386-.86-.86V6.289c0-.473.383-.86.86-.86h1.722z"/>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/c/NexusCoalition" target="_blank" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.498 6.186a3.02 3.02 0 0 0-2.122-2.122C19.7 3.54 12 3.54 12 3.54s-7.7 0-9.376.524a3.02 3.02 0 0 0-2.122 2.122C.5 7.864.5 12 .5 12s0 4.136.5 5.814a3.02 3.02 0 0 0 2.122 2.122c1.676.524 9.376.524 9.376.524s7.7 0 9.376-.524a3.02 3.02 0 0 0 2.122-2.122c.5-1.678.5-5.814.5-5.814s0-4.136-.5-5.814zM9.54 15.936V8.064L15.827 12l-6.287 3.936z"/>
+                </svg>
+            </a>
+        </div>
+        <p>&copy; 2025 Nexus Coalition. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
