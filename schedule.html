@@ -265,6 +265,50 @@
     </style>
 </head>
 <body>
+    <!-- Hidden YouTube background music player -->
+    <div id="yt-bg-music" style="width:0;height:0;overflow:hidden;position:absolute;"></div>
+    // Persistent YouTube background music logic
+    let ytPlayer;
+    function onYouTubeIframeAPIReady() {
+        ytPlayer = new YT.Player('yt-bg-music', {
+            height: '0',
+            width: '0',
+            videoId: 'HNxPHjxtowA',
+            playerVars: {
+                autoplay: 0,
+                controls: 0,
+                loop: 1,
+                playlist: 'HNxPHjxtowA',
+                modestbranding: 1,
+                fs: 0,
+                rel: 0,
+                showinfo: 0
+            },
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        const savedTime = localStorage.getItem('ytMusicTime');
+        const wasPlaying = localStorage.getItem('ytMusicPlaying') === 'true';
+        if (savedTime) event.target.seekTo(parseFloat(savedTime));
+        if (wasPlaying) event.target.playVideo();
+    }
+
+    window.addEventListener('beforeunload', () => {
+        if (ytPlayer && ytPlayer.getCurrentTime) {
+            localStorage.setItem('ytMusicTime', ytPlayer.getCurrentTime());
+            localStorage.setItem('ytMusicPlaying', ytPlayer.getPlayerState() === YT.PlayerState.PLAYING);
+        }
+    });
+
+    // Load YouTube IFrame API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     <!-- Navigation Bar -->
     <nav class="navbar">
