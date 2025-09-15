@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Coalition Roster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset and Fonts */
+        body, h1, h2, h3, p, ul {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            color: #E0E0E0;
+            font-family: 'Roboto Mono', monospace;
+            line-height: 1.6;
+        }
+
+        h1, h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Color Palette Variables */
+        :root {
+            --primary-bg: #000000;
+            --accent-orange: #ff9800;
+            --accent-blue: #2196f3;
+            --text-color: #E0E0E0;
+            /* Remove purple/cyan accents */
+        }
+
+        /* General Layout */
+        .main-content {
+            padding: 40px 5%;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: #1a1a1a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo a {
+            color: var(--text-color);
+            font-size: 1.5em;
+            font-weight: 900;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-orange);
+        }
+
+        .nav-links .active-link {
+            color: var(--accent-orange);
+            text-shadow: 0 0 5px var(--accent-orange);
+        }
+
+        /* Roster Grid */
+        .roster-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .player-card {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .player-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .player-info {
+            padding: 20px;
+        }
+
+        .player-info h3 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .player-info p {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        /* Player Details Section */
+        #player-details-section {
+            display: none; /* Initially hidden */
+            max-width: 900px;
+            margin: 0 auto;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .player-profile {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .player-profile img {
+            width: 250px;
+            height: 250px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .profile-text {
+            flex: 1;
+        }
+
+        .profile-text h3 {
+            font-size: 2em;
+            color: var(--accent-orange);
+        }
+        
+        .profile-text h4 {
+            font-size: 1.2em;
+            color: #ccc;
+            margin-top: 5px;
+        }
+
+        .profile-text p {
+            margin-top: 10px;
+        }
+
+        .profile-text .stats {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .profile-text .stats span {
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--accent-blue);
+            color: var(--primary-bg);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: var(--accent-orange);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 5%;
+            background-color: #1a1a1a;
+            border-top: 1px solid #333;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .social-links a:hover {
+            opacity: 1;
+        }
+
+        .social-links svg {
+            fill: var(--text-color);
+            width: 30px;
+            height: 30px;
+            transition: fill 0.3s;
+        }
+
+        .social-links a:hover svg {
+            fill: var(--accent-orange);
+        }
+
+        .footer p {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px 5%;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            .nav-links li {
+                margin: 5px 10px;
+            }
+
+            .player-profile {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .player-profile img {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html">Nexus Coalition</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="roster.html" class="active-link">ROSTER</a></li>
+            <li><a href="schedule.html">SCHEDULE</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <!-- Roster Section - Dynamically rendered -->
+        <section id="roster-section">
+            <h2 style="text-align: center; font-size: 2.5em; margin-bottom: 40px; color: var(--accent-orange); text-shadow: 0 0 10px rgba(255, 152, 0, 0.5);">MEET THE TEAM</h2>
+            <div id="roster-grid" class="roster-grid">
+                <!-- Player cards will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Player Details Section - Initially hidden -->
+        <section id="player-details-section">
+            <h2 id="player-bio-title" style="text-align: center; font-size: 2.5em; margin-bottom: 40px; color: var(--accent-orange); text-shadow: 0 0 10px rgba(255, 152, 0, 0.5);"></h2>
+            <div id="player-profile-content">
+                <!-- Player bio and details will be injected here by JavaScript -->
+            </div>
+            <button id="back-button" class="back-button">Back to Roster</button>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="social-links">
+            <a href="https://twitter.com/NexusCoalition" target="_blank" aria-label="Twitter">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.953 4.57a10 10 0 0 1-2.825.775 4.958 4.958 0 0 0 2.163-2.723c-.951.555-2.005.959-3.127 1.185A4.956 4.956 0 0 0 14.82 2.76a4.956 4.956 0 0 0-4.958 4.958c0 .389.044.767.127 1.135A14.045 14.045 0 0 1 1.47 2.133a4.955 4.955 0 0 0-.66 2.477c0 1.71.868 3.218 2.185 4.1a4.958 4.958 0 0 1-2.24-.618v.062c0 2.38 1.69 4.35 3.93 4.805a4.939 4.939 0 0 1-2.23.084c.623 1.956 2.438 3.38 4.587 3.42A9.973 9.973 0 0 1 0 20.31a14.025 14.025 0 0 0 7.556 2.213c9.055 0 14.01-7.493 14.01-14.01 0-.214-.005-.429-.014-.641a9.96 9.96 0 0 0 2.44-2.525z"/>
+                </svg>
+            </a>
+            <a href="https://www.twitch.tv/thenexuscoalition" target="_blank" aria-label="Twitch">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.571 5.429c.477 0 .86.386.86.86v4.303c0 .473-.383.86-.86.86h-1.722c-.477 0-.86-.386-.86-.86V6.289c0-.473.383-.86.86-.86h1.722zM21.571 2.22c-1.397-1.396-3.08-2.22-4.912-2.22h-10.4c-.957 0-1.87.37-2.554 1.055C2.923 1.83 2.552 2.744 2.552 3.701v14.402c0 .957.37 1.87 1.055 2.554.684.684 1.597 1.055 2.554 1.055h10.4c1.832 0 3.515-.823 4.912-2.22l2.365-2.365V5.586c0-1.397-1.127-2.525-2.525-2.525zm-2.525 15.541l-2.007 2.007h-10.4c-.53 0-1.037-.206-1.413-.583-.377-.377-.583-.883-.583-1.413V3.701c0-.53.206-1.037.583-1.413.376-.377.883-.583 1.413-.583h10.4c.53 0 1.037.206 1.413.583.377.376.583.883.583 1.413v14.06zM15.429 5.429c.477 0 .86.386.86.86v4.303c0 .473-.383.86-.86.86h-1.722c-.477 0-.86-.386-.86-.86V6.289c0-.473.383-.86.86-.86h1.722z"/>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/@TheNexusCoalitionESports" target="_blank" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.498 6.186a3.02 3.02 0 0 0-2.122-2.122C19.7 3.54 12 3.54 12 3.54s-7.7 0-9.376.524a3.02 3.02 0 0 0-2.122 2.122C.5 7.864.5 12 .5 12s0 4.136.5 5.814a3.02 3.02 0 0 0 2.122 2.122c1.676.524 9.376.524 9.376.524s7.7 0 9.376-.524a3.02 3.02 0 0 0 2.122-2.122c.5-1.678.5-5.814.5-5.814s0-4.136-.5-5.814zM9.54 15.936V8.064L15.827 12l-6.287 3.936z"/>
+                </svg>
+            </a>
+        </div>
+        <p>&copy; 2025 Nexus Coalition. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const players = [
+            {
+                id: 'kosmic',
+                name: 'KOSMIC',
+                role: 'Coach',
+                image: 'https://placehold.co/400x450/1a1a1a/cccccc?text=KOSMIC',
+                bio: 'Bio Coming Soon',
+                stats: {
+                    'Favorite Game': 'Tactical RPGs',
+                    'Strategic Focus': 'Macro-level play, opponent analysis',
+                }
+            },
+            {
+                id: 'damon1245',
+                name: 'DAMON1245',
+                role: 'Captain | Tank',
+                image: 'https://placehold.co/400x450/1a1a1a/cccccc?text=DAMON1245',
+                bio: 'Damon&#39;s journey into gaming started with a passion for narrative-driven titles from developers like Remedy Entertainment. His first foray into competitive gaming was with the release of Overwatch, where he immediately connected with the high-mobility tank D.Va. This initial spark evolved into a deep fascination with the entire tank role, leading him to master a wide range of heroes and become the team&#39;s steadfast anchor. When he&#39;s not leading the team in-game, Damon spends his time diving into game development, driven by a desire to understand the mechanics and worlds that have defined his gaming experience.',
+                stats: {
+                    'Main Role': 'Tank',
+                    'Favorite Character': 'D.VA',
+                    'Specialty': 'Frontline engagement and protection'
+                }
+            },
+            {
+                id: 'lucshen',
+                name: 'LUCSHEN',
+                role: 'Damage',
+                image: 'https://placehold.co/400x450/1a1a1a/cccccc?text=LUCSHEN',
+                bio: 'Bio Coming Soon',
+                stats: {
+                    'Main Role': 'Damage',
+                    'Favorite Character': 'The Medic',
+                    'Specialty': 'Healing and team utility'
+                }
+            },
+            {
+                id: 'astheticpico',
+                name: 'ASTHETICPICO',
+                role: 'Damage',
+                image: 'https://placehold.co/400x450/1a1a1a/cccccc?text=ASTHETICPICO',
+                bio: 'Bio Coming Soon',
+                stats: {
+                    'Main Role': 'Damage',
+                    'Favorite Character': 'The Medic',
+                    'Specialty': 'Healing and team utility'
+                }
+            },
+            {
+                id: 'nutking',
+                name: 'NUTKING',
+                role: 'Support',
+                image: 'https://placehold.co/400x450/1a1a1a/cccccc?text=NUTKING',
+                bio: 'Bio Coming Soon',
+                stats: {
+                    'Main Role': 'Support',
+                    'Favorite Character': 'The Medic',
+                    'Specialty': 'Healing and team utility'
+                }
+            },
+            {
+                id: 'queenyuanushi',
+                name: 'QUEEN YANUSHI',
+                role: 'Support',
+                image: 'https://placehold.co/400x450/1a1a1a/cccccc?text=QUEEN+YANUSHI',
+                bio: 'Queen Yanushi is a proud mama of two — a fierce little lady and a sweet baby boy — and has been happily engaged since 2023. She&#39;s been creating content since 2018 and made her VTuber debut in 2021, bringing her signature mix of sass, charm, and chaos to every stream. A dedicated Mercy main with a healer&#39;s heart and a devilish grin, she knows exactly how to keep her team — and her audience — on their toes. Sweet, spicy, and unapologetically bold, Queen Yanushi isn&#39;t just a vibe... she&#39;s the whole damn experience.',
+                stats: {
+                    'Main Role': 'Support',
+                    'Favorite Character': 'Mercy',
+                    'Specialty': 'Healing and team utility'
+                }
+            },
+            {
+                id: 'onipixalz',
+                name: 'ONIPIXALZ',
+                role: 'Substitute',
+                image: 'https://placehold.co/400x450/1a1a1a/cccccc?text=ONIPIXALZ',
+                bio: 'Bio Coming Soon',
+                stats: {
+                    'Main Role': 'Substitute',
+                    'Specialty': 'Flexibility and adaptability',
+                    'Strengths': 'Broad hero pool, quick to learn'
+                }
+            }
+        ];
+
+        const rosterGridEl = document.getElementById('roster-grid');
+        const rosterSectionEl = document.getElementById('roster-section');
+        const playerDetailsSectionEl = document.getElementById('player-details-section');
+        const playerBioTitleEl = document.getElementById('player-bio-title');
+        const playerProfileContentEl = document.getElementById('player-profile-content');
+        const backButton = document.getElementById('back-button');
+
+        // Function to render all player cards
+        function renderRoster() {
+            rosterGridEl.innerHTML = ''; // Clear previous content
+            players.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.dataset.playerId = player.id;
+                card.innerHTML = `
+                    <img src="${player.image}" alt="${player.name} player photo">
+                    <div class="player-info">
+                        <h3>${player.name}</h3>
+                        <p>${player.role}</p>
+                    </div>
+                `;
+                rosterGridEl.appendChild(card);
+            });
+
+            // Add event listeners to the new cards
+            document.querySelectorAll('.player-card').forEach(card => {
+                card.addEventListener('click', handlePlayerClick);
+            });
+        }
+
+        // Function to handle a player card click
+        function handlePlayerClick(event) {
+            const playerId = event.currentTarget.dataset.playerId;
+            const player = players.find(p => p.id === playerId);
+            if (player) {
+                renderPlayerBio(player);
+                rosterSectionEl.style.display = 'none';
+                playerDetailsSectionEl.style.display = 'flex';
+            }
+        }
+
+        // Function to render a player's detailed bio
+        function renderPlayerBio(player) {
+            playerBioTitleEl.textContent = player.name;
+            playerProfileContentEl.innerHTML = `
+                <div class="player-profile">
+                    <img src="${player.image}" alt="${player.name} player photo">
+                    <div class="profile-text">
+                        <h3>${player.name}</h3>
+                        <h4>${player.role}</h4>
+                        <p>${player.bio}</p>
+                        <div class="stats">
+                            ${Object.entries(player.stats).map(([key, value]) => `<p><span>${key}:</span> ${value}</p>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Handle back button click
+        backButton.addEventListener('click', () => {
+            rosterSectionEl.style.display = 'block';
+            playerDetailsSectionEl.style.display = 'none';
+        });
+
+        // Initial render
+        renderRoster();
+    </script>
+
+</body>
+</html>
