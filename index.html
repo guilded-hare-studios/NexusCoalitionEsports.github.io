@@ -332,7 +332,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="logo">
-            <a href="index.html">Nexus Coalition</a>
+            <a href="index.html"><img src="Png-04 Copy.PNG" alt="Nexus Coalition Logo" style="height:40px;vertical-align:middle;margin-right:10px;">Nexus Coalition</a>
         </div>
         <ul class="nav-links">
             <li><a href="index.html" class="active-link">HOME</a></li>
@@ -367,7 +367,7 @@
                     <div class="player-card">
                         <img src="https://placehold.co/400x450/1a1a1a/cccccc?text=KOSMIC" alt="Kosmic player photo">
                         <div class="player-info">
-                            <h3><a href="roster.html#kosmic">KOSMIC</a></h3>
+                            <h3><a href="kosmic.html">KOSMIC</a></h3>
                             <p>Coach</p>
                         </div>
                     </div>
@@ -375,7 +375,7 @@
                     <div class="player-card">
                         <img src="https://placehold.co/400x450/1a1a1a/cccccc?text=DAMON1245" alt="Damon1245 player photo">
                         <div class="player-info">
-                            <h3><a href="roster.html#damon1245">DAMON1245</a></h3>
+                            <h3><a href="damon1245.html">DAMON1245</a></h3>
                             <p>Captain | Tank</p>
                         </div>
                     </div>
@@ -383,7 +383,7 @@
                     <div class="player-card">
                         <img src="https://placehold.co/400x450/1a1a1a/cccccc?text=LUCSHEN" alt="LucShen player photo">
                         <div class="player-info">
-                            <h3><a href="roster.html#lucshen">LUCSHEN</a></h3>
+                            <h3><a href="lucshen.html">LUCSHEN</a></h3>
                             <p>Damage</p>
                         </div>
                     </div>
@@ -391,7 +391,7 @@
                     <div class="player-card">
                         <img src="https://placehold.co/400x450/1a1a1a/cccccc?text=ASTHETICPICO" alt="AstheticPico player photo">
                         <div class="player-info">
-                            <h3><a href="roster.html#astheticpico">ASTHETICPICO</a></h3>
+                            <h3><a href="astheticpico.html">ASTHETICPICO</a></h3>
                             <p>Damage</p>
                         </div>
                     </div>
@@ -399,7 +399,7 @@
                     <div class="player-card">
                         <img src="https://placehold.co/400x450/1a1a1a/cccccc?text=NUTKING" alt="NutKing player photo">
                         <div class="player-info">
-                            <h3><a href="roster.html#nutking">NUTKING</a></h3>
+                            <h3><a href="nutking.html">NUTKING</a></h3>
                             <p>Support</p>
                         </div>
                     </div>
@@ -407,7 +407,7 @@
                     <div class="player-card">
                         <img src="https://placehold.co/400x450/1a1a1a/cccccc?text=QUEEN+YANUSHI" alt="Queen Yanushi player photo">
                         <div class="player-info">
-                            <h3><a href="roster.html#queenyanushi">QUEEN YANUSHI</a></h3>
+                            <h3><a href="queenyanushi.html">QUEEN YANUSHI</a></h3>
                             <p>Support</p>
                         </div>
                     </div>
@@ -415,7 +415,7 @@
                     <div class="player-card">
                         <img src="https://placehold.co/400x450/1a1a1a/cccccc?text=ONIPIXALZ" alt="OniPixalz player photo">
                         <div class="player-info">
-                            <h3><a href="roster.html#onipixalz">ONIPIXALZ</a></h3>
+                            <h3><a href="onipixalz.html">ONIPIXALZ</a></h3>
                             <p>Substitute</p>
                         </div>
                     </div>
@@ -425,24 +425,23 @@
         </section>
         
         <!-- Schedule Section -->
-        <section class="schedule-section">
             <h2>Upcoming Matches</h2>
-            <div class="schedule-content">
-                <!-- Match 1 -->
+            <div class="schedule-content" id="upcoming-matches">
+                <!-- Matches will be filtered by JS -->
                 <div class="schedule-match">
-                    <h3>October 27th, 9:00 PM EST</h3>
+                    <h3>October 27th, 2025, 9:00 PM EST</h3>
                     <p><strong>Tournament:</strong> FACEIT League Open Division</p>
                     <p><strong>Opponent:</strong> TBD</p>
                 </div>
-                <!-- Match 2 -->
                 <div class="schedule-match" style="border-bottom: none;">
-                    <h3>October 29th, 9:00 PM EST</h3>
+                    <h3>October 29th, 2025, 9:00 PM EST</h3>
                     <p><strong>Tournament:</strong> FACEIT League Open Division</p>
                     <p><strong>Opponent:</strong> TBD</p>
                 </div>
             </div>
         </section>
     </main>
+        <section class="about-us">
 
     <!-- Footer -->
     <footer class="footer">
@@ -467,6 +466,35 @@
     </footer>
 
     <script>
+    // Show only the next two upcoming matches
+    document.addEventListener('DOMContentLoaded', function() {
+        const matchCards = Array.from(document.querySelectorAll('.schedule-match'));
+        // Parse dates and sort matches
+        const months = {
+            'January':0,'February':1,'March':2,'April':3,'May':4,'June':5,'July':6,'August':7,'September':8,'October':9,'November':10,'December':11
+        };
+        let now = new Date();
+        let futureMatches = matchCards.map(card => {
+            const h3 = card.querySelector('h3');
+            if (!h3) return null;
+            let dateText = h3.textContent;
+            let parsed = dateText.match(/([A-Za-z]+) (\d+)[a-z]*, (\d{4})/);
+            if (!parsed) return null;
+            let month = parsed[1];
+            let day = parseInt(parsed[2], 10);
+            let year = parseInt(parsed[3], 10);
+            let monthNum = months[month];
+            if (monthNum === undefined) return null;
+            let matchDate = new Date(year, monthNum, day);
+            return {card, matchDate};
+        }).filter(m => m && m.matchDate >= now.setHours(0,0,0,0));
+        // Sort by date ascending
+        futureMatches.sort((a, b) => a.matchDate - b.matchDate);
+        // Hide all matches first
+        matchCards.forEach(m => m.style.display = 'none');
+        // Show only the next two
+        futureMatches.slice(0,2).forEach(m => m.card.style.display = '');
+    });
     // Persistent looping YouTube background music with fade-out
     let fadeInterval;
     function onYouTubeIframeAPIReady() {
