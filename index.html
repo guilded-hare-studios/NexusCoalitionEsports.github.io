@@ -338,6 +338,7 @@
             <li><a href="index.html" class="active-link">HOME</a></li>
             <li><a href="roster.html">ROSTER</a></li>
             <li><a href="schedule.html">SCHEDULE</a></li>
+                <li><a href="news.html">NEWS</a></li>
         </ul>
     </nav>
 
@@ -358,6 +359,16 @@
 
         
 
+                <section class="news-section">
+                    <h2>RECENT NEWS</h2>
+                    <div class="news-content">
+                        <div class="news-card">
+                            <h3>Welcome to the new Nexus Coalition site!</h3>
+                            <p>Stay tuned for updates, match results, and more.</p>
+                            <a href="news.html">Read More</a>
+                        </div>
+                    </div>
+                </section>
         <!-- Featured Players Section -->
         <section class="featured-players-section">
             <h2>FEATURED PLAYERS</h2>
@@ -495,136 +506,7 @@
         // Show only the next two
         futureMatches.slice(0,2).forEach(m => m.card.style.display = '');
     });
-    // Persistent looping YouTube background music with fade-out
-    let fadeInterval;
-    function onYouTubeIframeAPIReady() {
-        ytPlayer = new YT.Player('yt-bg-music', {
-            height: '0',
-            width: '0',
-            videoId: 'HNxPHjxtowA',
-            playerVars: {
-                autoplay: 0,
-                controls: 0,
-                loop: 1,
-                playlist: 'HNxPHjxtowA',
-                modestbranding: 1,
-                fs: 0,
-                rel: 0,
-                showinfo: 0
-            },
-            events: {
-                'onReady': onPlayerReady
-            }
-        });
-    }
-
-    function onPlayerReady(event) {
-        const savedTime = localStorage.getItem('ytMusicTime');
-        const wasPlaying = localStorage.getItem('ytMusicPlaying') === 'true';
-        if (savedTime) event.target.seekTo(parseFloat(savedTime));
-        if (wasPlaying) event.target.playVideo();
-        event.target.setVolume(100);
-    }
-
-    function fadeOutAndPause(duration = 2000) {
-        if (!ytPlayer || typeof ytPlayer.getVolume !== 'function') return;
-        let volume = ytPlayer.getVolume();
-        let steps = 20;
-        let stepTime = duration / steps;
-        clearInterval(fadeInterval);
-        fadeInterval = setInterval(() => {
-            volume -= 100 / steps;
-            if (volume <= 0) {
-                ytPlayer.setVolume(0);
-                ytPlayer.pauseVideo();
-                clearInterval(fadeInterval);
-            } else {
-                ytPlayer.setVolume(Math.max(0, volume));
-            }
-        }, stepTime);
-    }
-
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            fadeOutAndPause(2000);
-        } else {
-            if (ytPlayer && ytPlayer.getPlayerState() === YT.PlayerState.PAUSED) {
-                ytPlayer.setVolume(100);
-                ytPlayer.playVideo();
-            }
-        }
-    });
-
-    window.addEventListener('beforeunload', () => {
-        if (ytPlayer && ytPlayer.getCurrentTime) {
-            fadeOutAndPause(2000);
-            localStorage.setItem('ytMusicTime', ytPlayer.getCurrentTime());
-            localStorage.setItem('ytMusicPlaying', ytPlayer.getPlayerState() === YT.PlayerState.PLAYING);
-        }
-    });
-
-    // Load YouTube IFrame API
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    function onYouTubeIframeAPIReady() {
-        ytPlayer = new YT.Player('yt-bg-music', {
-            height: '0',
-            width: '0',
-            videoId: 'HNxPHjxtowA',
-            playerVars: {
-                autoplay: 0,
-                controls: 0,
-                loop: 1,
-                playlist: 'HNxPHjxtowA',
-                modestbranding: 1,
-                fs: 0,
-                rel: 0,
-                showinfo: 0
-            },
-            events: {
-                'onReady': onPlayerReady
-            }
-        });
-    }
-
-    function onPlayerReady(event) {
-        const savedTime = localStorage.getItem('ytMusicTime');
-        const wasPlaying = localStorage.getItem('ytMusicPlaying') === 'true';
-        if (savedTime) event.target.seekTo(parseFloat(savedTime));
-        if (wasPlaying) event.target.playVideo();
-    }
-
-    window.addEventListener('beforeunload', () => {
-        if (ytPlayer && ytPlayer.getCurrentTime) {
-            localStorage.setItem('ytMusicTime', ytPlayer.getCurrentTime());
-            localStorage.setItem('ytMusicPlaying', ytPlayer.getPlayerState() === YT.PlayerState.PLAYING);
-        }
-    });
-
-    // Load YouTube IFrame API
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        // Function to load the news content from localStorage
-        function loadNewsContent() {
-            const newsContent = document.querySelector('.news-content');
-            const savedArticle = localStorage.getItem('newsArticleContent');
-
-            if (savedArticle) {
-                // If content is found in localStorage, inject it into the news section
-                newsContent.innerHTML = savedArticle;
-            } else {
-                // If no content is found, display a fallback message
-                newsContent.innerHTML = `
-                    <h3>No Recent News</h3>
-                    <p>Head over to the <a href="news.html">News page</a> to create a featured article!</p>
-                `;
-            }
-        }
-
+   
         // Call the function on window load to populate the news section
         window.onload = loadNewsContent;
     </script>

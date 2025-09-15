@@ -249,6 +249,7 @@
             <li><a href="index.html">HOME</a></li>
             <li><a href="roster.html">ROSTER</a></li>
             <li><a href="schedule.html">SCHEDULE</a></li>
+                <li><a href="news.html" class="active-link">NEWS</a></li>
         </ul>
     </nav>
 
@@ -307,6 +308,21 @@
             date: "October 28, 2025",
             content: "Building on the momentum from our recent victory at the Regional Finals, Nexus Coalition is thrilled to announce a series of strategic partnerships and our ambitious plans for the upcoming year. We are dedicated to pushing the boundaries of competitive gaming and providing our fans with unprecedented content and experiences.Our new collaborations with leading technology and apparel brands will not only enhance our team's performance but also bring exciting new merchandise to the shop. Furthermore, we are investing in a state-of-the-art training facility to ensure our players have the resources they need to dominate the national and international stage.Thank you for your continued support. The future is bright, and we're just getting started. Stay tuned for more updates as we gear up for the National Championship!"
         };
+
+        // Save featured article to localStorage for index.html
+        function updateIndexNewsSection() {
+            const newsHTML = `
+                <div class="news-card">
+                    <h3>${featuredArticleData.title}</h3>
+                    <p>${featuredArticleData.content.substring(0, 120)}...</p>
+                    <a href="news.html">Read More</a>
+                </div>
+            `;
+            localStorage.setItem('newsArticleContent', newsHTML);
+        }
+
+        // Call update on page load
+        updateIndexNewsSection();
 
         // Make featured article clickable
         featuredArticleCard.style.cursor = 'pointer';
