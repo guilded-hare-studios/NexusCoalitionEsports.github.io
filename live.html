@@ -239,6 +239,17 @@
     </style>
 </head>
 <body>
+    <script>
+    // If coming from a music-enabled page, fade out music on arrival
+    window.addEventListener('DOMContentLoaded', () => {
+        if (window.opener || document.referrer) {
+            // Try to signal music fade out on previous page
+            try {
+                window.localStorage.setItem('ytMusicPlaying', false);
+            } catch (e) {}
+        }
+    });
+    </script>
 
     <!-- Navigation Bar -->
     <nav class="navbar">

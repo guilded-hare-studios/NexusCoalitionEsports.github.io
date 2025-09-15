@@ -326,6 +326,8 @@
 <body>
     <!-- Hidden YouTube background music player -->
     <div id="yt-bg-music" style="width:0;height:0;overflow:hidden;position:absolute;"></div>
+    <!-- Hidden YouTube background music player -->
+    <div id="yt-bg-music" style="width:0;height:0;overflow:hidden;position:absolute;"></div>
 
     <!-- Navigation Bar -->
     <nav class="navbar">
@@ -351,7 +353,7 @@
         <!-- About Us Section -->
         <section class="about-us">
             <h2>ABOUT US</h2>
-            <p>Nexus Coalition is a premier esports organization dedicated to excellence, innovation, and community. We believe in pushing the boundaries of competitive gaming, both on the field and in the way we connect with our fans. Our team represents the pinnacle of skill and sportsmanship, and we are committed to building a legacy of success.</p>
+            <p>TBA</p>
         </section>
 
         
@@ -465,8 +467,79 @@
     </footer>
 
     <script>
-    // Persistent YouTube background music logic
-    let ytPlayer;
+    // Persistent looping YouTube background music with fade-out
+    let fadeInterval;
+    function onYouTubeIframeAPIReady() {
+        ytPlayer = new YT.Player('yt-bg-music', {
+            height: '0',
+            width: '0',
+            videoId: 'HNxPHjxtowA',
+            playerVars: {
+                autoplay: 0,
+                controls: 0,
+                loop: 1,
+                playlist: 'HNxPHjxtowA',
+                modestbranding: 1,
+                fs: 0,
+                rel: 0,
+                showinfo: 0
+            },
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        const savedTime = localStorage.getItem('ytMusicTime');
+        const wasPlaying = localStorage.getItem('ytMusicPlaying') === 'true';
+        if (savedTime) event.target.seekTo(parseFloat(savedTime));
+        if (wasPlaying) event.target.playVideo();
+        event.target.setVolume(100);
+    }
+
+    function fadeOutAndPause(duration = 2000) {
+        if (!ytPlayer || typeof ytPlayer.getVolume !== 'function') return;
+        let volume = ytPlayer.getVolume();
+        let steps = 20;
+        let stepTime = duration / steps;
+        clearInterval(fadeInterval);
+        fadeInterval = setInterval(() => {
+            volume -= 100 / steps;
+            if (volume <= 0) {
+                ytPlayer.setVolume(0);
+                ytPlayer.pauseVideo();
+                clearInterval(fadeInterval);
+            } else {
+                ytPlayer.setVolume(Math.max(0, volume));
+            }
+        }, stepTime);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            fadeOutAndPause(2000);
+        } else {
+            if (ytPlayer && ytPlayer.getPlayerState() === YT.PlayerState.PAUSED) {
+                ytPlayer.setVolume(100);
+                ytPlayer.playVideo();
+            }
+        }
+    });
+
+    window.addEventListener('beforeunload', () => {
+        if (ytPlayer && ytPlayer.getCurrentTime) {
+            fadeOutAndPause(2000);
+            localStorage.setItem('ytMusicTime', ytPlayer.getCurrentTime());
+            localStorage.setItem('ytMusicPlaying', ytPlayer.getPlayerState() === YT.PlayerState.PLAYING);
+        }
+    });
+
+    // Load YouTube IFrame API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     function onYouTubeIframeAPIReady() {
         ytPlayer = new YT.Player('yt-bg-music', {
             height: '0',
