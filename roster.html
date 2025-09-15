@@ -472,7 +472,8 @@
                 stats: {
                     'Main Role': 'Tank',
                     'Favorite Character': 'D.VA',
-                    'Specialty': 'Frontline engagement and protection'
+                    'Specialty': 'Frontline engagement and protection',
+                    'Favorite Quote': '&quot;BACK UP YOU HILLBILLY HOEBAG!!!&quot;'
                 }
             },
             {
@@ -512,7 +513,7 @@
                 }
             },
             {
-                id: 'queenyuanushi',
+                id: 'queenyanushi',
                 name: 'QUEEN YANUSHI',
                 role: 'Support',
                 image: 'https://placehold.co/400x450/1a1a1a/cccccc?text=QUEEN+YANUSHI',
@@ -520,7 +521,7 @@
                 stats: {
                     'Main Role': 'Support',
                     'Favorite Character': 'Mercy',
-                    'Specialty': 'Healing and team utility'
+                    'Specialty': 'Healing and Frontline Support'
                 }
             },
             {
@@ -565,6 +566,17 @@
             document.querySelectorAll('.player-card').forEach(card => {
                 card.addEventListener('click', handlePlayerClick);
             });
+
+            // Auto-open player card if hash is present
+            if (window.location.hash) {
+                const hashId = window.location.hash.replace('#', '');
+                const player = players.find(p => p.id.toLowerCase() === hashId.toLowerCase());
+                if (player) {
+                    renderPlayerBio(player);
+                    rosterSectionEl.style.display = 'none';
+                    playerDetailsSectionEl.style.display = 'flex';
+                }
+            }
         }
 
         // Function to handle a player card click
